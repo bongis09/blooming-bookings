@@ -354,61 +354,21 @@ function DetailsStep({
 
     setSubmitting(true);
     try {
-      // Upsert client by phone
-      const { data: existing } = await supabase
-        .from("clients")
-        .select("id")
-        .eq("phone", cleanPhone)
-        .maybeSingle();
-
-      let clientId = existing?.id;
-      if (!clientId) {
-        const { data: created, error: cErr } = await supabase
-          .from("clients")
-          .insert({
-            name,
-            phone: cleanPhone,
-            email: email || null,
-            marketing_opt_in: marketing,
-            notes: notes || null,
-          })
-          .select("id")
-          .single();
-        if (cErr) throw cErr;
-        clientId = created.id;
-      } else {
-        await supabase
-          .from("clients")
-          .update({ name, email: email || null, marketing_opt_in: marketing })
-          .eq("id", clientId);
-      }
-
-      // ⚠️ STUB: real Yoco payment would happen here. For now we mark deposit_paid = true.
-      const { data: booking, error: bErr } = await supabase
-        .from("bookings")
-        .insert({
-          client_id: clientId,
-          service_id: service.id,
-          start_at: slotStart.toISOString(),
-          end_at: slotEnd.toISOString(),
-          status: "confirmed",
-          deposit_cents: deposit,
-          deposit_paid: true,
-          balance_due_cents: balance,
+      // ⚠️ STUB: real Yoco payment would happen here. Server marks deposit_paid = true.
+      const booking = await createBooking({
+        data: {
+          name,
+          phone: cleanPhone,
+          email: email || null,
+          marketing,
           notes: notes || null,
-          source: "app",
-        })
-        .select("id")
-        .single();
+          serviceId: service.id,
+          startAt: slotStart.toISOString(),
+          endAt: slotEnd.toISOString(),
+        },
+      });
 
-      if (bErr) {
-        if (bErr.message?.toLowerCase().includes("overlap") || bErr.code === "23P01") {
-          toast("Oh no, that slot just got taken 💔 pick another one babe");
-          setSubmitting(false);
-          return;
-        }
-        throw bErr;
-      }
+
 
       toast.success("Deposit received babe 💗 you're locked in 🌸");
       onDone(booking.id);
