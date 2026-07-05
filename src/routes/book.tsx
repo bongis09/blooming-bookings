@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { createBooking } from "@/lib/salon.functions";
 import {
   formatDayShort,
   formatDuration,
@@ -13,6 +14,7 @@ import {
   type WorkingHours,
 } from "@/lib/booking";
 import { BrandLogo } from "@/components/BrandLogo";
+
 
 const searchSchema = z.object({
   serviceId: z.string().optional(),
