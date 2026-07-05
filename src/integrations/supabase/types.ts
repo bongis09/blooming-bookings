@@ -14,7 +14,213 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      blocked_slots: {
+        Row: {
+          created_at: string
+          end_at: string
+          id: string
+          reason: string | null
+          start_at: string
+        }
+        Insert: {
+          created_at?: string
+          end_at: string
+          id?: string
+          reason?: string | null
+          start_at: string
+        }
+        Update: {
+          created_at?: string
+          end_at?: string
+          id?: string
+          reason?: string | null
+          start_at?: string
+        }
+        Relationships: []
+      }
+      bookings: {
+        Row: {
+          balance_due_cents: number
+          balance_paid_cents: number
+          client_id: string | null
+          created_at: string
+          deposit_cents: number
+          deposit_paid: boolean
+          deposit_refunded: boolean
+          end_at: string
+          id: string
+          notes: string | null
+          service_id: string | null
+          source: string
+          start_at: string
+          status: string
+        }
+        Insert: {
+          balance_due_cents?: number
+          balance_paid_cents?: number
+          client_id?: string | null
+          created_at?: string
+          deposit_cents?: number
+          deposit_paid?: boolean
+          deposit_refunded?: boolean
+          end_at: string
+          id?: string
+          notes?: string | null
+          service_id?: string | null
+          source?: string
+          start_at: string
+          status?: string
+        }
+        Update: {
+          balance_due_cents?: number
+          balance_paid_cents?: number
+          client_id?: string | null
+          created_at?: string
+          deposit_cents?: number
+          deposit_paid?: boolean
+          deposit_refunded?: boolean
+          end_at?: string
+          id?: string
+          notes?: string | null
+          service_id?: string | null
+          source?: string
+          start_at?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clients: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          marketing_opt_in: boolean
+          name: string
+          notes: string | null
+          phone: string
+          total_spend_cents: number
+          total_visits: number
+          vip: boolean
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          marketing_opt_in?: boolean
+          name: string
+          notes?: string | null
+          phone: string
+          total_spend_cents?: number
+          total_visits?: number
+          vip?: boolean
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          marketing_opt_in?: boolean
+          name?: string
+          notes?: string | null
+          phone?: string
+          total_spend_cents?: number
+          total_visits?: number
+          vip?: boolean
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          active: boolean
+          category: string
+          created_at: string
+          description: string | null
+          display_order: number
+          duration_minutes: number
+          id: string
+          name: string
+          price_cents: number
+          tier: string | null
+        }
+        Insert: {
+          active?: boolean
+          category: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          duration_minutes: number
+          id?: string
+          name: string
+          price_cents: number
+          tier?: string | null
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          duration_minutes?: number
+          id?: string
+          name?: string
+          price_cents?: number
+          tier?: string | null
+        }
+        Relationships: []
+      }
+      settings: {
+        Row: {
+          admin_pin: string
+          buffer_minutes: number
+          cancellation_hours: number
+          deposit_cents: number
+          id: number
+          instagram_handle: string
+          salon_name: string
+          salon_tagline: string
+          whatsapp_business_number: string
+          working_hours: Json
+        }
+        Insert: {
+          admin_pin?: string
+          buffer_minutes?: number
+          cancellation_hours?: number
+          deposit_cents?: number
+          id?: number
+          instagram_handle?: string
+          salon_name?: string
+          salon_tagline?: string
+          whatsapp_business_number?: string
+          working_hours?: Json
+        }
+        Update: {
+          admin_pin?: string
+          buffer_minutes?: number
+          cancellation_hours?: number
+          deposit_cents?: number
+          id?: number
+          instagram_handle?: string
+          salon_name?: string
+          salon_tagline?: string
+          whatsapp_business_number?: string
+          working_hours?: Json
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
