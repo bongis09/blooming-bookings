@@ -49,25 +49,29 @@ function SettingsPage() {
   }, [s]);
 
   const save = async () => {
+    if (!s) return;
+    const newPin = pin.replace(/\D/g, "").slice(0, 4) || "1234";
     setSaving(true);
-    const { error } = await supabase
-      .from("settings")
-      .update({
-        deposit_cents: Math.round(Number(depositRands) * 100),
-        buffer_minutes: Number(buffer),
-        cancellation_hours: Number(cancelHours),
-        whatsapp_business_number: whatsapp.replace(/[^0-9]/g, ""),
-        admin_pin: pin.replace(/\D/g, "").slice(0, 4) || "1234",
-      })
-      .eq("id", 1);
-    setSaving(false);
-    if (error) {
+    try {
+      await updateAdminSettings({
+        data: {
+          pin: s.admin_pin,
+          deposit_cents: Math.round(Number(depositRands) * 100),
+          buffer_minutes: Number(buffer),
+          cancellation_hours: Number(cancelHours),
+          whatsapp_business_number: whatsapp.replace(/[^0-9]/g, ""),
+          admin_pin: newPin,
+        },
+      });
+      toast.success("Saved babe 💗");
+      qc.invalidateQueries({ queryKey: ["settings"] });
+    } catch {
       toast("Couldn't save babe 😭 try again");
-      return;
+    } finally {
+      setSaving(false);
     }
-    toast.success("Saved babe 💗");
-    qc.invalidateQueries({ queryKey: ["settings"] });
   };
+
 
   if (!s) {
     return <div className="p-10 text-center text-text-soft">One sec babe 🌸</div>;
