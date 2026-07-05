@@ -80,7 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Book your nails with Lerato at Blooming GLITZ, Toti Mall, Amanzimtoti. Pick a slot, pay a small deposit, you're in 🌸",
       },
       { name: "author", content: "Blooming GLITZ" },
-      { property: "og:title", content: "Blooming GLITZ — Let me doll you up 💗" },
+      { property: "og:title", content: "Blooming GLITZ — Nails at Toti Mall 💅" },
       {
         property: "og:description",
         content:
@@ -88,6 +88,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Blooming GLITZ — Nails at Toti Mall 💅" },
+      { name: "description", content: "Book your nails with Lerato at Blooming GLITZ, Toti Mall, Amanzimtoti. Pick a slot, pay a small deposit, you're in 🌸" },
+      { property: "og:description", content: "Book your nails with Lerato at Blooming GLITZ, Toti Mall, Amanzimtoti. Pick a slot, pay a small deposit, you're in 🌸" },
+      { name: "twitter:description", content: "Book your nails with Lerato at Blooming GLITZ, Toti Mall, Amanzimtoti. Pick a slot, pay a small deposit, you're in 🌸" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ae3aacf9-028b-4639-bb07-b9759e2d0f51/id-preview-0873f33e--191516bb-2e01-49f6-b220-a7166760ca8c.lovable.app-1783293328813.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ae3aacf9-028b-4639-bb07-b9759e2d0f51/id-preview-0873f33e--191516bb-2e01-49f6-b220-a7166760ca8c.lovable.app-1783293328813.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
