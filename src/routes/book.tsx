@@ -374,9 +374,14 @@ function DetailsStep({
       onDone(booking.id);
     } catch (err) {
       console.error(err);
-      toast(
-        "Uh oh babe, something went wrong on my side 😭 try again, if it keeps happening just WhatsApp me 💗",
-      );
+      const msg = err instanceof Error ? err.message.toLowerCase() : "";
+      if (msg.includes("overlap") || msg.includes("23p01")) {
+        toast("Oh no, that slot just got taken 💔 pick another one babe");
+      } else {
+        toast(
+          "Uh oh babe, something went wrong on my side 😭 try again, if it keeps happening just WhatsApp me 💗",
+        );
+      }
       setSubmitting(false);
     }
   };
