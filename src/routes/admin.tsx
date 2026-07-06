@@ -110,7 +110,7 @@ function Dashboard() {
         .in("status", ["confirmed", "completed"])
         .order("start_at");
       if (error) throw error;
-      return data;
+      return data as Array<(typeof data)[number] & { inspo_urls: string[] | null }>;
     },
   });
 
@@ -200,25 +200,30 @@ function Dashboard() {
             {today.map((b) => (
               <div
                 key={b.id}
-                className="bg-white rounded-2xl px-4 py-3 flex items-center justify-between shadow-sm"
+                className="bg-white rounded-2xl px-4 py-3 shadow-sm"
               >
-                <div>
-                  <div className="font-medium">
-                    {formatTime(b.start_at)} · {b.clients?.name ?? "Walk-in"}
-                    {b.clients?.vip && <span className="ml-1">💎</span>}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-medium">
+                      {formatTime(b.start_at)} · {b.clients?.name ?? "Walk-in"}
+                      {b.clients?.vip && <span className="ml-1">💎</span>}
+                    </div>
+                    <div className="text-xs text-text-soft">
+                      {b.services?.name} · 💗 deposit paid
+                    </div>
                   </div>
-                  <div className="text-xs text-text-soft">
-                    {b.services?.name} · 💗 deposit paid
-                  </div>
+                  <a
+                    href={`https://wa.me/${(b.clients?.phone ?? "").replace(/[^0-9]/g, "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-gold-deep"
+                  >
+                    💬
+                  </a>
                 </div>
-                <a
-                  href={`https://wa.me/${(b.clients?.phone ?? "").replace(/[^0-9]/g, "")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-gold-deep"
-                >
-                  💬
-                </a>
+                {b.inspo_urls && b.inspo_urls.length > 0 && (
+                  <InspoStrip paths={b.inspo_urls} />
+                )}
               </div>
             ))}
           </div>
@@ -287,6 +292,33 @@ function StatCard({ label, main, sub }: { label: string; main: string; sub: stri
       <div className="text-xs uppercase tracking-widest text-text-soft">{label}</div>
       <div className="font-heading text-xl mt-1">{main}</div>
       {sub && <div className="text-xs text-gold-deep mt-1">{sub}</div>}
+    </div>
+  );
+}
+
+function InspoStrip({ paths }: { paths: string[] }) {
+  const { data: urls = [] } = useQuery({
+    queryKey: ["admin-inspo", paths.join(",")],
+    queryFn: async () => {
+      const { data, error } = await supabase.storage
+        .from("inspo")
+        .createSignedUrls(paths, 60 * 60 * 24 * 7);
+      if (error) throw error;
+      return (data ?? []).map((d) => d.signedUrl).filter(Boolean) as string[];
+    },
+  });
+  if (urls.length === 0) return null;
+  return (
+    <div className="mt-3 flex gap-2 overflow-x-auto">
+      {urls.map((url, i) => (
+        <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+          <img
+            src={url}
+            alt={`Inspo ${i + 1}`}
+            className="w-16 h-16 object-cover rounded-lg border border-cream-soft"
+          />
+        </a>
+      ))}
     </div>
   );
 }

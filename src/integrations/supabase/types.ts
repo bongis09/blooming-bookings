@@ -49,6 +49,7 @@ export type Database = {
           deposit_refunded: boolean
           end_at: string
           id: string
+          inspo_urls: string[]
           notes: string | null
           service_id: string | null
           source: string
@@ -65,6 +66,7 @@ export type Database = {
           deposit_refunded?: boolean
           end_at: string
           id?: string
+          inspo_urls?: string[]
           notes?: string | null
           service_id?: string | null
           source?: string
@@ -81,6 +83,7 @@ export type Database = {
           deposit_refunded?: boolean
           end_at?: string
           id?: string
+          inspo_urls?: string[]
           notes?: string | null
           service_id?: string | null
           source?: string

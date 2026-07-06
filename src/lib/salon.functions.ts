@@ -10,7 +10,9 @@ const bookingSchema = z.object({
   serviceId: z.string().uuid(),
   startAt: z.string().min(10),
   endAt: z.string().min(10),
+  inspoPaths: z.array(z.string().max(300)).max(6).optional().default([]),
 });
+
 
 export const createBooking = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => bookingSchema.parse(d))
@@ -80,6 +82,7 @@ export const createBooking = createServerFn({ method: "POST" })
         balance_due_cents: balance,
         notes: data.notes || null,
         source: "app",
+        inspo_urls: data.inspoPaths ?? [],
       })
       .select("id")
       .single();

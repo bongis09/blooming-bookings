@@ -62,6 +62,19 @@ function ConfirmationPage() {
     },
   });
 
+  const inspoPaths = (data?.inspo_urls ?? []) as string[];
+  const { data: inspoLinks = [] } = useQuery({
+    queryKey: ["inspo-signed", id, inspoPaths.join(",")],
+    enabled: inspoPaths.length > 0,
+    queryFn: async () => {
+      const { data, error } = await supabase.storage
+        .from("inspo")
+        .createSignedUrls(inspoPaths, 60 * 60 * 24 * 365);
+      if (error) throw error;
+      return (data ?? []).map((d) => d.signedUrl).filter(Boolean) as string[];
+    },
+  });
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center text-text-soft">
@@ -77,12 +90,16 @@ function ConfirmationPage() {
   const service = data.services;
   const dayLabel = formatDayLong(data.start_at);
   const timeLabel = formatTime(data.start_at);
-  const message = buildConfirmationMessage({
+  const baseMessage = buildConfirmationMessage({
     dayLabel,
     timeLabel,
     depositCents: data.deposit_cents,
     balanceCents: data.balance_due_cents,
   });
+  const message =
+    inspoLinks.length > 0
+      ? `${baseMessage}\n\nMy inspo 📸\n${inspoLinks.join("\n")}`
+      : baseMessage;
   const waNumber = settings?.whatsapp_business_number ?? "27692281472";
 
   const addToCalendar = () => {
@@ -139,6 +156,26 @@ function ConfirmationPage() {
             last
           />
         </div>
+
+        {inspoLinks.length > 0 && (
+          <div className="mt-6 bg-white rounded-3xl p-5 shadow-sm border border-cream-soft">
+            <div className="text-xs uppercase tracking-widest text-text-soft mb-3">
+              Your inspo 📸
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {inspoLinks.map((url, i) => (
+                <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+                  <img
+                    src={url}
+                    alt={`Inspo ${i + 1}`}
+                    className="w-full aspect-square object-cover rounded-xl"
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
 
         <div className="mt-6 space-y-3">
           <button
