@@ -157,6 +157,26 @@ function ConfirmationPage() {
           />
         </div>
 
+        {inspoLinks.length > 0 && (
+          <div className="mt-6 bg-white rounded-3xl p-5 shadow-sm border border-cream-soft">
+            <div className="text-xs uppercase tracking-widest text-text-soft mb-3">
+              Your inspo 📸
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {inspoLinks.map((url, i) => (
+                <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+                  <img
+                    src={url}
+                    alt={`Inspo ${i + 1}`}
+                    className="w-full aspect-square object-cover rounded-xl"
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+
         <div className="mt-6 space-y-3">
           <button
             onClick={addToCalendar}
