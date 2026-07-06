@@ -355,6 +355,18 @@ function DetailsStep({
 
     setSubmitting(true);
     try {
+      // Upload inspo pictures first (private "inspo" bucket, anon has insert policy)
+      const inspoPaths: string[] = [];
+      for (const file of inspoFiles) {
+        const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+        const path = `${crypto.randomUUID()}.${ext}`;
+        const { error: upErr } = await supabase.storage
+          .from("inspo")
+          .upload(path, file, { contentType: file.type, upsert: false });
+        if (upErr) throw upErr;
+        inspoPaths.push(path);
+      }
+
       // ⚠️ STUB: real Yoco payment would happen here. Server marks deposit_paid = true.
       const booking = await createBooking({
         data: {
@@ -366,6 +378,7 @@ function DetailsStep({
           serviceId: service.id,
           startAt: slotStart.toISOString(),
           endAt: slotEnd.toISOString(),
+          inspoPaths,
         },
       });
 
