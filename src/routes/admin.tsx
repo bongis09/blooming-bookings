@@ -295,3 +295,30 @@ function StatCard({ label, main, sub }: { label: string; main: string; sub: stri
     </div>
   );
 }
+
+function InspoStrip({ paths }: { paths: string[] }) {
+  const { data: urls = [] } = useQuery({
+    queryKey: ["admin-inspo", paths.join(",")],
+    queryFn: async () => {
+      const { data, error } = await supabase.storage
+        .from("inspo")
+        .createSignedUrls(paths, 60 * 60 * 24 * 7);
+      if (error) throw error;
+      return (data ?? []).map((d) => d.signedUrl).filter(Boolean) as string[];
+    },
+  });
+  if (urls.length === 0) return null;
+  return (
+    <div className="mt-3 flex gap-2 overflow-x-auto">
+      {urls.map((url, i) => (
+        <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+          <img
+            src={url}
+            alt={`Inspo ${i + 1}`}
+            className="w-16 h-16 object-cover rounded-lg border border-cream-soft"
+          />
+        </a>
+      ))}
+    </div>
+  );
+}
