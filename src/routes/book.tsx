@@ -447,6 +447,55 @@ function DetailsStep({
           />
         </Field>
 
+        <Field label="Drop your inspo pics babe 📸 (up to 6)">
+          <div className="space-y-3">
+            <label className="flex items-center justify-center w-full min-h-[96px] bg-white border-2 border-dashed border-gold/60 rounded-xl cursor-pointer hover:bg-cream-soft text-sm text-text-soft">
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                className="hidden"
+                onChange={(e) => {
+                  const picked = Array.from(e.target.files ?? []);
+                  const combined = [...inspoFiles, ...picked].slice(0, 6);
+                  const filtered = combined.filter((f) => f.size <= 8 * 1024 * 1024);
+                  if (filtered.length < combined.length) {
+                    toast("One of those pics is over 8MB babe 🌸 try a smaller one");
+                  }
+                  setInspoFiles(filtered);
+                  e.target.value = "";
+                }}
+              />
+              <span>📸 Tap to add pictures</span>
+            </label>
+            {inspoFiles.length > 0 && (
+              <div className="grid grid-cols-3 gap-2">
+                {inspoFiles.map((file, i) => {
+                  const url = URL.createObjectURL(file);
+                  return (
+                    <div key={i} className="relative aspect-square">
+                      <img
+                        src={url}
+                        alt={`Inspo ${i + 1}`}
+                        className="w-full h-full object-cover rounded-xl"
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setInspoFiles(inspoFiles.filter((_, idx) => idx !== i))
+                        }
+                        className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-wine text-white text-xs shadow-md"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </Field>
+
         <div className="bg-gradient-to-br from-rose/30 to-cream-soft rounded-2xl p-5">
           <div className="font-heading text-lg">Hold your spot 💗</div>
           <p className="text-sm text-text-soft mt-1">
