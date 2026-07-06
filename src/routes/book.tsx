@@ -332,6 +332,7 @@ function DetailsStep({
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [notes, setNotes] = useState("");
+  const [inspoFiles, setInspoFiles] = useState<File[]>([]);
   const [terms, setTerms] = useState(false);
   const [marketing, setMarketing] = useState(true);
   const [submitting, setSubmitting] = useState(false);
