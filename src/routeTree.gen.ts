@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
@@ -17,12 +18,21 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ConfirmationIdRouteImport } from './routes/confirmation.$id'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminServicesRouteImport } from './routes/admin.services'
+import { Route as AdminGalleryRouteImport } from './routes/admin.gallery'
 import { Route as AdminServicesIndexRouteImport } from './routes/admin.services.index'
+import { Route as AdminGalleryIndexRouteImport } from './routes/admin.gallery.index'
 import { Route as AdminServicesIdRouteImport } from './routes/admin.services.$id'
+import { Route as AdminGalleryNewRouteImport } from './routes/admin.gallery.new'
+import { Route as AdminGalleryIdRouteImport } from './routes/admin.gallery.$id'
 
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookRoute = BookRouteImport.update({
@@ -60,37 +70,66 @@ const AdminServicesRoute = AdminServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminGalleryRoute = AdminGalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminServicesIndexRoute = AdminServicesIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminServicesRoute,
+} as any)
+const AdminGalleryIndexRoute = AdminGalleryIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminGalleryRoute,
 } as any)
 const AdminServicesIdRoute = AdminServicesIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => AdminServicesRoute,
 } as any)
+const AdminGalleryNewRoute = AdminGalleryNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => AdminGalleryRoute,
+} as any)
+const AdminGalleryIdRoute = AdminGalleryIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminGalleryRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/book': typeof BookRoute
+  '/gallery': typeof GalleryRoute
   '/services': typeof ServicesRoute
+  '/admin/gallery': typeof AdminGalleryRouteWithChildren
   '/admin/services': typeof AdminServicesRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/confirmation/$id': typeof ConfirmationIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/gallery/$id': typeof AdminGalleryIdRoute
+  '/admin/gallery/new': typeof AdminGalleryNewRoute
   '/admin/services/$id': typeof AdminServicesIdRoute
+  '/admin/gallery/': typeof AdminGalleryIndexRoute
   '/admin/services/': typeof AdminServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/book': typeof BookRoute
+  '/gallery': typeof GalleryRoute
   '/services': typeof ServicesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/confirmation/$id': typeof ConfirmationIdRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/gallery/$id': typeof AdminGalleryIdRoute
+  '/admin/gallery/new': typeof AdminGalleryNewRoute
   '/admin/services/$id': typeof AdminServicesIdRoute
+  '/admin/gallery': typeof AdminGalleryIndexRoute
   '/admin/services': typeof AdminServicesIndexRoute
 }
 export interface FileRoutesById {
@@ -98,12 +137,17 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/book': typeof BookRoute
+  '/gallery': typeof GalleryRoute
   '/services': typeof ServicesRoute
+  '/admin/gallery': typeof AdminGalleryRouteWithChildren
   '/admin/services': typeof AdminServicesRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/confirmation/$id': typeof ConfirmationIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/gallery/$id': typeof AdminGalleryIdRoute
+  '/admin/gallery/new': typeof AdminGalleryNewRoute
   '/admin/services/$id': typeof AdminServicesIdRoute
+  '/admin/gallery/': typeof AdminGalleryIndexRoute
   '/admin/services/': typeof AdminServicesIndexRoute
 }
 export interface FileRouteTypes {
@@ -112,34 +156,48 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/book'
+    | '/gallery'
     | '/services'
+    | '/admin/gallery'
     | '/admin/services'
     | '/admin/settings'
     | '/confirmation/$id'
     | '/admin/'
+    | '/admin/gallery/$id'
+    | '/admin/gallery/new'
     | '/admin/services/$id'
+    | '/admin/gallery/'
     | '/admin/services/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/book'
+    | '/gallery'
     | '/services'
     | '/admin/settings'
     | '/confirmation/$id'
     | '/admin'
+    | '/admin/gallery/$id'
+    | '/admin/gallery/new'
     | '/admin/services/$id'
+    | '/admin/gallery'
     | '/admin/services'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/book'
+    | '/gallery'
     | '/services'
+    | '/admin/gallery'
     | '/admin/services'
     | '/admin/settings'
     | '/confirmation/$id'
     | '/admin/'
+    | '/admin/gallery/$id'
+    | '/admin/gallery/new'
     | '/admin/services/$id'
+    | '/admin/gallery/'
     | '/admin/services/'
   fileRoutesById: FileRoutesById
 }
@@ -147,6 +205,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   BookRoute: typeof BookRoute
+  GalleryRoute: typeof GalleryRoute
   ServicesRoute: typeof ServicesRoute
   ConfirmationIdRoute: typeof ConfirmationIdRoute
 }
@@ -158,6 +217,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/book': {
@@ -209,12 +275,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminServicesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/gallery': {
+      id: '/admin/gallery'
+      path: '/gallery'
+      fullPath: '/admin/gallery'
+      preLoaderRoute: typeof AdminGalleryRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/services/': {
       id: '/admin/services/'
       path: '/'
       fullPath: '/admin/services/'
       preLoaderRoute: typeof AdminServicesIndexRouteImport
       parentRoute: typeof AdminServicesRoute
+    }
+    '/admin/gallery/': {
+      id: '/admin/gallery/'
+      path: '/'
+      fullPath: '/admin/gallery/'
+      preLoaderRoute: typeof AdminGalleryIndexRouteImport
+      parentRoute: typeof AdminGalleryRoute
     }
     '/admin/services/$id': {
       id: '/admin/services/$id'
@@ -223,8 +303,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminServicesIdRouteImport
       parentRoute: typeof AdminServicesRoute
     }
+    '/admin/gallery/new': {
+      id: '/admin/gallery/new'
+      path: '/new'
+      fullPath: '/admin/gallery/new'
+      preLoaderRoute: typeof AdminGalleryNewRouteImport
+      parentRoute: typeof AdminGalleryRoute
+    }
+    '/admin/gallery/$id': {
+      id: '/admin/gallery/$id'
+      path: '/$id'
+      fullPath: '/admin/gallery/$id'
+      preLoaderRoute: typeof AdminGalleryIdRouteImport
+      parentRoute: typeof AdminGalleryRoute
+    }
   }
 }
+
+interface AdminGalleryRouteChildren {
+  AdminGalleryIdRoute: typeof AdminGalleryIdRoute
+  AdminGalleryNewRoute: typeof AdminGalleryNewRoute
+  AdminGalleryIndexRoute: typeof AdminGalleryIndexRoute
+}
+
+const AdminGalleryRouteChildren: AdminGalleryRouteChildren = {
+  AdminGalleryIdRoute: AdminGalleryIdRoute,
+  AdminGalleryNewRoute: AdminGalleryNewRoute,
+  AdminGalleryIndexRoute: AdminGalleryIndexRoute,
+}
+
+const AdminGalleryRouteWithChildren = AdminGalleryRoute._addFileChildren(
+  AdminGalleryRouteChildren,
+)
 
 interface AdminServicesRouteChildren {
   AdminServicesIdRoute: typeof AdminServicesIdRoute
@@ -241,12 +351,14 @@ const AdminServicesRouteWithChildren = AdminServicesRoute._addFileChildren(
 )
 
 interface AdminRouteChildren {
+  AdminGalleryRoute: typeof AdminGalleryRouteWithChildren
   AdminServicesRoute: typeof AdminServicesRouteWithChildren
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminGalleryRoute: AdminGalleryRouteWithChildren,
   AdminServicesRoute: AdminServicesRouteWithChildren,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
@@ -258,6 +370,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   BookRoute: BookRoute,
+  GalleryRoute: GalleryRoute,
   ServicesRoute: ServicesRoute,
   ConfirmationIdRoute: ConfirmationIdRoute,
 }

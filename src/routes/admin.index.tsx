@@ -109,6 +109,12 @@ function Dashboard() {
             Services 💅
           </Link>
           <Link
+            to="/admin/gallery"
+            className="text-sm text-text-soft hover:text-gold-deep"
+          >
+            Gallery 📸
+          </Link>
+          <Link
             to="/admin/settings"
             className="text-sm text-text-soft hover:text-gold-deep"
           >
@@ -184,7 +190,7 @@ function Dashboard() {
           {[
             { icon: "🚫", label: "Block slot" },
             { icon: "💅", label: "Services", to: "/admin/services" },
-            { icon: "✍️", label: "Add client" },
+            { icon: "📸", label: "Gallery", to: "/admin/gallery" },
             { icon: "⚙️", label: "Settings", to: "/admin/settings" },
           ].map((item) =>
             item.to ? (
