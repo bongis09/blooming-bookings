@@ -109,6 +109,12 @@ function Dashboard() {
             Services 💅
           </Link>
           <Link
+            to="/admin/gallery"
+            className="text-sm text-text-soft hover:text-gold-deep"
+          >
+            Gallery 📸
+          </Link>
+          <Link
             to="/admin/settings"
             className="text-sm text-text-soft hover:text-gold-deep"
           >
