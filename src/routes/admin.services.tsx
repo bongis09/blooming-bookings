@@ -1,9 +1,9 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { formatZAR, formatDuration } from "@/lib/booking";
 import { BrandLogo } from "@/components/BrandLogo";
+import { AdminPinGate, useAdminUnlocked } from "@/components/AdminPinGate";
 
 export const Route = createFileRoute("/admin/services")({
   component: ServicesAdminPage,
