@@ -143,8 +143,16 @@ function Home() {
         </div>
       </section>
 
-      <footer className="text-center text-xs text-text-soft py-6">
-        Blooming GLITZ · Made with 💗
+      <footer className="text-center text-xs text-text-soft py-6 space-y-2">
+        <a
+          href="https://instagram.com/leratolanga866"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block hover:text-gold-deep transition-colors"
+        >
+          💗 @leratolanga866
+        </a>
+        <p>Blooming GLITZ · Made with 💗</p>
       </footer>
     </main>
   );
