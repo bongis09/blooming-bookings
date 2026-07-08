@@ -74,16 +74,14 @@ export const upsertGallerySet = createServerFn({ method: "POST" })
         .single();
       oldPath = existing?.image_path ?? null;
 
-      const patch: Record<string, unknown> = {
-        title: data.title,
-        category: data.category,
-        active: data.active,
-      };
-      if (newPath) patch.image_path = newPath;
-
       const { error } = await supabaseAdmin
         .from("gallery_sets")
-        .update(patch)
+        .update({
+          title: data.title,
+          category: data.category,
+          active: data.active,
+          ...(newPath ? { image_path: newPath } : {}),
+        })
         .eq("id", data.id);
       if (error) throw new Error(error.message);
 
