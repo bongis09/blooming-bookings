@@ -1,4 +1,4 @@
-import logoAsset from "@/assets/blooming-glitz-logo.png.asset.json";
+import logoAsset from "@/assets/blooming-glitz-logo.jpg.asset.json";
 
 interface BrandLogoProps {
   size?: number;
@@ -14,9 +14,12 @@ export function BrandLogo({ size = 88, showWordmark = false, className = "" }: B
         alt="Blooming GLITZ logo"
         width={size}
         height={size}
+        loading="eager"
+        decoding="async"
         style={{ width: size, height: size }}
         className="object-contain rounded-full"
       />
+
       {showWordmark && (
         <div className="leading-tight">
           <div className="font-display text-3xl text-gold-deep -mb-1">Blooming</div>
