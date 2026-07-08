@@ -17,7 +17,9 @@ function Home() {
     <main className="min-h-screen">
       {/* Top bar */}
       <header className="px-5 pt-6 pb-2 flex items-center justify-between max-w-5xl mx-auto">
-        <BrandLogo size={80} />
+        <Link to="/book">
+          <BrandLogo size={80} />
+        </Link>
         <Link
           to="/admin"
           className="text-xs text-text-soft hover:text-gold-deep transition-colors"
