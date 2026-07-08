@@ -13,6 +13,7 @@ import { Route as ServicesRouteImport } from './routes/services'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ConfirmationIdRouteImport } from './routes/confirmation.$id'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminServicesRouteImport } from './routes/admin.services'
@@ -37,6 +38,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const ConfirmationIdRoute = ConfirmationIdRouteImport.update({
   id: '/confirmation/$id',
@@ -67,16 +73,17 @@ export interface FileRoutesByFullPath {
   '/admin/services': typeof AdminServicesRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/confirmation/$id': typeof ConfirmationIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/admin/services/$id': typeof AdminServicesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
   '/book': typeof BookRoute
   '/services': typeof ServicesRoute
   '/admin/services': typeof AdminServicesRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/confirmation/$id': typeof ConfirmationIdRoute
+  '/admin': typeof AdminIndexRoute
   '/admin/services/$id': typeof AdminServicesIdRoute
 }
 export interface FileRoutesById {
@@ -88,6 +95,7 @@ export interface FileRoutesById {
   '/admin/services': typeof AdminServicesRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/confirmation/$id': typeof ConfirmationIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/admin/services/$id': typeof AdminServicesIdRoute
 }
 export interface FileRouteTypes {
@@ -100,16 +108,17 @@ export interface FileRouteTypes {
     | '/admin/services'
     | '/admin/settings'
     | '/confirmation/$id'
+    | '/admin/'
     | '/admin/services/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/book'
     | '/services'
     | '/admin/services'
     | '/admin/settings'
     | '/confirmation/$id'
+    | '/admin'
     | '/admin/services/$id'
   id:
     | '__root__'
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
     | '/admin/services'
     | '/admin/settings'
     | '/confirmation/$id'
+    | '/admin/'
     | '/admin/services/$id'
   fileRoutesById: FileRoutesById
 }
@@ -160,6 +170,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/confirmation/$id': {
       id: '/confirmation/$id'
@@ -207,11 +224,13 @@ const AdminServicesRouteWithChildren = AdminServicesRoute._addFileChildren(
 interface AdminRouteChildren {
   AdminServicesRoute: typeof AdminServicesRouteWithChildren
   AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminServicesRoute: AdminServicesRouteWithChildren,
   AdminSettingsRoute: AdminSettingsRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
@@ -226,3 +245,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

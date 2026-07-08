@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { upsertService, deleteService } from "@/lib/salon.functions";
 import { BrandLogo } from "@/components/BrandLogo";
-import { AdminPinGate, useAdminUnlocked } from "@/components/AdminPinGate";
 
 export const Route = createFileRoute("/admin/services/$id")({
   component: ServiceEditPage,
@@ -16,8 +15,6 @@ export const Route = createFileRoute("/admin/services/$id")({
     ],
   }),
 });
-
-const PIN_KEY = "blooming-glitz-pin-ok";
 
 const CATEGORIES = [
   { value: "nails", label: "Nails 💅" },
@@ -37,7 +34,6 @@ function ServiceEditPage() {
   const isNew = id === "new";
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const [unlocked, setUnlocked] = useAdminUnlocked();
 
   const { data: settings } = useQuery({
     queryKey: ["settings"],
@@ -50,7 +46,6 @@ function ServiceEditPage() {
       if (error) throw error;
       return data;
     },
-    enabled: unlocked,
   });
 
   const { data: service, isLoading } = useQuery({
@@ -65,7 +60,7 @@ function ServiceEditPage() {
       if (error) throw error;
       return data;
     },
-    enabled: unlocked && !isNew,
+    enabled: !isNew,
   });
 
   const { data: futureBookings = 0 } = useQuery({
@@ -81,7 +76,7 @@ function ServiceEditPage() {
       if (error) throw error;
       return count ?? 0;
     },
-    enabled: unlocked && !isNew,
+    enabled: !isNew,
   });
 
   const [name, setName] = useState("");
@@ -105,9 +100,6 @@ function ServiceEditPage() {
     setDescription(service.description ?? "");
   }, [service]);
 
-  if (!unlocked) {
-    return <AdminPinGate onUnlock={() => setUnlocked(true)} />;
-  }
   if (!isNew && isLoading) {
     return <div className="p-10 text-center text-text-soft">One sec babe 🌸</div>;
   }

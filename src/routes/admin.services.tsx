@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { formatZAR, formatDuration } from "@/lib/booking";
 import { BrandLogo } from "@/components/BrandLogo";
-import { AdminPinGate, useAdminUnlocked } from "@/components/AdminPinGate";
 
 export const Route = createFileRoute("/admin/services")({
   component: ServicesAdminPage,
@@ -14,8 +13,6 @@ export const Route = createFileRoute("/admin/services")({
     ],
   }),
 });
-
-const PIN_KEY = "blooming-glitz-pin-ok";
 
 type Service = {
   id: string;
@@ -56,8 +53,6 @@ function nailsSubCategory(name: string): "Acrylic" | "Polygel" | "Gel X" | "Othe
 }
 
 function ServicesAdminPage() {
-  const [unlocked, setUnlocked] = useAdminUnlocked();
-
   const { data: services = [], isLoading } = useQuery({
     queryKey: ["admin-services"],
     queryFn: async () => {
@@ -68,12 +63,7 @@ function ServicesAdminPage() {
       if (error) throw error;
       return data as Service[];
     },
-    enabled: unlocked,
   });
-
-  if (!unlocked) {
-    return <AdminPinGate onUnlock={() => setUnlocked(true)} />;
-  }
 
   const nails = services.filter((s) => s.category === "nails");
   const toesExtras = services.filter((s) => s.category !== "nails");
