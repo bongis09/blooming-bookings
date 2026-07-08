@@ -53,7 +53,7 @@ function Home() {
               Book your glow 💅
             </Link>
             <Link
-              to="/services"
+              to="/gallery"
               className="btn-pill border border-gold bg-white/70 text-gold-deep hover:bg-white"
             >
               See my work
