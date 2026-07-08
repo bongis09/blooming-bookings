@@ -105,7 +105,10 @@ function ServiceEditPage() {
     setDescription(service.description ?? "");
   }, [service]);
 
-  if (!unlocked || (!isNew && isLoading)) {
+  if (!unlocked) {
+    return <AdminPinGate onUnlock={() => setUnlocked(true)} />;
+  }
+  if (!isNew && isLoading) {
     return <div className="p-10 text-center text-text-soft">One sec babe 🌸</div>;
   }
 
