@@ -190,7 +190,7 @@ function Dashboard() {
           {[
             { icon: "🚫", label: "Block slot" },
             { icon: "💅", label: "Services", to: "/admin/services" },
-            { icon: "✍️", label: "Add client" },
+            { icon: "📸", label: "Gallery", to: "/admin/gallery" },
             { icon: "⚙️", label: "Settings", to: "/admin/settings" },
           ].map((item) =>
             item.to ? (
