@@ -130,9 +130,10 @@ function Home() {
             href="https://www.instagram.com/blooming_glitz?igsh=MWR2ZnZ6ZDl1enpweQ=="
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-gold-deep transition-colors"
+            className="inline-flex items-center gap-1.5 hover:text-gold-deep transition-colors"
           >
-            💗 @blooming_glitz
+            <Instagram className="w-4 h-4" />
+            <span>@blooming_glitz</span>
           </a>
         </div>
       </section>
@@ -156,9 +157,10 @@ function Home() {
           href="https://www.instagram.com/blooming_glitz?igsh=MWR2ZnZ6ZDl1enpweQ=="
           target="_blank"
           rel="noopener noreferrer"
-          className="block hover:text-gold-deep transition-colors"
+          className="inline-flex items-center justify-center gap-2 hover:text-gold-deep transition-colors"
         >
-          💗 @blooming_glitz
+          <Instagram className="w-4 h-4" />
+          <span>Follow us on Instagram @blooming_glitz</span>
         </a>
         <p>Blooming GLITZ · Made with 💗</p>
       </footer>
