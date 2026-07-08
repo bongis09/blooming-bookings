@@ -37,16 +37,7 @@ function ServiceEditPage() {
   const isNew = id === "new";
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const [unlocked, setUnlocked] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (sessionStorage.getItem(PIN_KEY) === "1") {
-      setUnlocked(true);
-    } else {
-      navigate({ to: "/admin" });
-    }
-  }, [navigate]);
+  const [unlocked, setUnlocked] = useAdminUnlocked();
 
   const { data: settings } = useQuery({
     queryKey: ["settings"],
