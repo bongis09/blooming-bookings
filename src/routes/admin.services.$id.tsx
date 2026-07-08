@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { upsertService, deleteService } from "@/lib/salon.functions";
 import { BrandLogo } from "@/components/BrandLogo";
+import { AdminPinGate, useAdminUnlocked } from "@/components/AdminPinGate";
 
 export const Route = createFileRoute("/admin/services/$id")({
   component: ServiceEditPage,
