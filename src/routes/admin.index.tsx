@@ -100,10 +100,7 @@ function Dashboard() {
   return (
     <main className="min-h-screen pb-28">
       <header className="px-5 pt-6 pb-4 max-w-4xl mx-auto flex items-center justify-between">
-        <div>
-          <BrandLogo size={44} showWordmark={false} />
-          <p className="font-display text-2xl text-gold-deep mt-1">Blooming GLITZ ✨</p>
-        </div>
+        <BrandLogo size={44} showWordmark={false} />
         <div className="flex items-center gap-4">
           <Link
             to="/admin/services"

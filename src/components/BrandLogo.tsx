@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import logoAsset from "@/assets/blooming-glitz-logo.jpg.asset.json";
 
 interface BrandLogoProps {
@@ -8,7 +9,7 @@ interface BrandLogoProps {
 
 export function BrandLogo({ size = 88, showWordmark = false, className = "" }: BrandLogoProps) {
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
+    <Link to="/book" className={`flex items-center gap-3 ${className}`}>
       <img
         src={logoAsset.url}
         alt="Blooming GLITZ logo"
@@ -28,6 +29,6 @@ export function BrandLogo({ size = 88, showWordmark = false, className = "" }: B
           </div>
         </div>
       )}
-    </div>
+    </Link>
   );
 }
