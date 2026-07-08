@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { BrandLogo } from "@/components/BrandLogo";
+import { Instagram } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Home,
