@@ -265,10 +265,11 @@ function Dashboard() {
         <div className="max-w-4xl mx-auto flex justify-around">
           {[
             { icon: "🚫", label: "Block slot" },
-            { icon: "💬", label: "Broadcast" },
+            { icon: "💅", label: "Services", to: "/admin/services" },
             { icon: "✍️", label: "Add client" },
             { icon: "⚙️", label: "Settings", to: "/admin/settings" },
           ].map((item) =>
+
             item.to ? (
               <Link
                 key={item.label}
