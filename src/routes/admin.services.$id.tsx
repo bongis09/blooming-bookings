@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { upsertService, deleteService } from "@/lib/salon.functions";
 import { BrandLogo } from "@/components/BrandLogo";
+import { AdminPinGate, useAdminUnlocked } from "@/components/AdminPinGate";
 
 export const Route = createFileRoute("/admin/services/$id")({
   component: ServiceEditPage,
@@ -36,16 +37,7 @@ function ServiceEditPage() {
   const isNew = id === "new";
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const [unlocked, setUnlocked] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (sessionStorage.getItem(PIN_KEY) === "1") {
-      setUnlocked(true);
-    } else {
-      navigate({ to: "/admin" });
-    }
-  }, [navigate]);
+  const [unlocked, setUnlocked] = useAdminUnlocked();
 
   const { data: settings } = useQuery({
     queryKey: ["settings"],
@@ -113,7 +105,10 @@ function ServiceEditPage() {
     setDescription(service.description ?? "");
   }, [service]);
 
-  if (!unlocked || (!isNew && isLoading)) {
+  if (!unlocked) {
+    return <AdminPinGate onUnlock={() => setUnlocked(true)} />;
+  }
+  if (!isNew && isLoading) {
     return <div className="p-10 text-center text-text-soft">One sec babe 🌸</div>;
   }
 
