@@ -176,12 +176,21 @@ function Dashboard() {
           <BrandLogo size={44} showWordmark={false} />
           <p className="font-display text-2xl text-gold-deep mt-1">Blooming GLITZ ✨</p>
         </div>
-        <Link
-          to="/admin/settings"
-          className="text-sm text-text-soft hover:text-gold-deep"
-        >
-          Settings ⚙️
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link
+            to="/admin/services"
+            className="text-sm text-text-soft hover:text-gold-deep"
+          >
+            Services 💅
+          </Link>
+          <Link
+            to="/admin/settings"
+            className="text-sm text-text-soft hover:text-gold-deep"
+          >
+            Settings ⚙️
+          </Link>
+        </div>
+
       </header>
 
       <section className="px-5 max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -256,10 +265,11 @@ function Dashboard() {
         <div className="max-w-4xl mx-auto flex justify-around">
           {[
             { icon: "🚫", label: "Block slot" },
-            { icon: "💬", label: "Broadcast" },
+            { icon: "💅", label: "Services", to: "/admin/services" },
             { icon: "✍️", label: "Add client" },
             { icon: "⚙️", label: "Settings", to: "/admin/settings" },
           ].map((item) =>
+
             item.to ? (
               <Link
                 key={item.label}
