@@ -76,9 +76,7 @@ function BookPage() {
   return (
     <main className="min-h-screen pb-24 bg-cream">
       <header className="px-5 pt-6 pb-4 flex items-center justify-between max-w-3xl mx-auto">
-        <Link to="/">
-          <BrandLogo size={44} showWordmark={false} />
-        </Link>
+        <BrandLogo size={44} showWordmark={false} />
         <div className="text-xs text-text-soft">
           Step {step === "service" ? 1 : step === "slot" ? 2 : 3} of 3
         </div>

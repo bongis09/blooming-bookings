@@ -118,9 +118,7 @@ function ConfirmationPage() {
   return (
     <main className="min-h-screen">
       <header className="px-5 pt-6 pb-4 max-w-3xl mx-auto flex justify-between items-center">
-        <Link to="/">
-          <BrandLogo size={44} showWordmark={false} />
-        </Link>
+        <BrandLogo size={44} showWordmark={false} />
       </header>
 
       <section className="max-w-xl mx-auto px-5">

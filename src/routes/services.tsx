@@ -47,9 +47,7 @@ function ServicesPage() {
   return (
     <main className="min-h-screen pb-24">
       <header className="px-5 pt-6 pb-4 flex items-center justify-between max-w-5xl mx-auto">
-        <Link to="/">
-          <BrandLogo size={44} showWordmark={false} />
-        </Link>
+        <BrandLogo size={44} showWordmark={false} />
         <Link to="/" className="text-sm text-text-soft">
           ← Home
         </Link>
