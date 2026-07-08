@@ -41,11 +41,11 @@ function SettingsPage() {
 
   useEffect(() => {
     if (!s) return;
-    setDepositRands(String(s.deposit_cents / 100));
-    setBuffer(String(s.buffer_minutes));
-    setCancelHours(String(s.cancellation_hours));
-    setWhatsapp(s.whatsapp_business_number);
-    setPin(s.admin_pin);
+    setDepositRands(String((s.deposit_cents ?? 0) / 100));
+    setBuffer(String(s.buffer_minutes ?? 0));
+    setCancelHours(String(s.cancellation_hours ?? 0));
+    setWhatsapp(s.whatsapp_business_number ?? "");
+    setPin(s.admin_pin ?? "");
   }, [s]);
 
   const save = async () => {

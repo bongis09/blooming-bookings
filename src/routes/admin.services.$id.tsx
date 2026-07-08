@@ -91,12 +91,12 @@ function ServiceEditPage() {
 
   useEffect(() => {
     if (!service) return;
-    setName(service.name);
-    setPriceRands(String(service.price_cents / 100));
-    setDuration(String(service.duration_minutes));
-    setCategory(service.category);
+    setName(service.name ?? "");
+    setPriceRands(String(((service.price_cents as number | null) ?? 0) / 100));
+    setDuration(String((service.duration_minutes as number | null) ?? 0));
+    setCategory(service.category ?? "nails");
     setTier(service.tier ?? "regular");
-    setActive(service.active);
+    setActive(Boolean(service.active));
     setDescription(service.description ?? "");
   }, [service]);
 
