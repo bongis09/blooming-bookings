@@ -125,7 +125,14 @@ function Home() {
         <div className="max-w-2xl mx-auto flex flex-col sm:flex-row justify-around gap-3 text-center text-sm text-text-dark">
           <div>📍 Toti Mall, Amanzimtoti</div>
           <div>🕗 Tue–Sat · 08:30–16:30</div>
-          <div>💗 @leratolanga866</div>
+          <a
+            href="https://www.instagram.com/blooming_glitz?igsh=MWR2ZnZ6ZDl1enpweQ=="
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-gold-deep transition-colors"
+          >
+            💗 @blooming_glitz
+          </a>
         </div>
       </section>
 
@@ -145,12 +152,12 @@ function Home() {
 
       <footer className="text-center text-xs text-text-soft py-6 space-y-2">
         <a
-          href="https://instagram.com/leratolanga866"
+          href="https://www.instagram.com/blooming_glitz?igsh=MWR2ZnZ6ZDl1enpweQ=="
           target="_blank"
           rel="noopener noreferrer"
           className="block hover:text-gold-deep transition-colors"
         >
-          💗 @leratolanga866
+          💗 @blooming_glitz
         </a>
         <p>Blooming GLITZ · Made with 💗</p>
       </footer>
