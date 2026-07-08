@@ -6,7 +6,7 @@ interface BrandLogoProps {
   className?: string;
 }
 
-export function BrandLogo({ size = 72, showWordmark = false, className = "" }: BrandLogoProps) {
+export function BrandLogo({ size = 88, showWordmark = false, className = "" }: BrandLogoProps) {
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       <img
