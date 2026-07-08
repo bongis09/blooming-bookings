@@ -61,7 +61,7 @@ function NewGalleryPage() {
   };
 
   const save = async () => {
-    const pin = sessionStorage.getItem("blooming-glitz-pin-value") ?? "";
+    const pin = settings?.admin_pin ?? "";
     if (!/^\d{4}$/.test(pin)) {
       toast("Babe, unlock again to upload 🌸");
       return;

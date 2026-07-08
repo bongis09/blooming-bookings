@@ -90,7 +90,7 @@ function EditGalleryPage() {
   };
 
   const save = async () => {
-    const pin = sessionStorage.getItem("blooming-glitz-pin-value") ?? "";
+    const pin = settings?.admin_pin ?? "";
     if (!/^\d{4}$/.test(pin)) {
       toast("Babe, unlock again to save 🌸");
       return;
@@ -131,7 +131,7 @@ function EditGalleryPage() {
   };
 
   const remove = async () => {
-    const pin = sessionStorage.getItem("blooming-glitz-pin-value") ?? "";
+    const pin = settings?.admin_pin ?? "";
     if (!/^\d{4}$/.test(pin)) {
       toast("Babe, unlock again to remove 🌸");
       return;

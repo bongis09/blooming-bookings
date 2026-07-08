@@ -68,7 +68,7 @@ function GalleryAdminPage() {
   }, [order, sets]);
 
   const saveOrder = async (next: string[]) => {
-    const pin = sessionStorage.getItem("blooming-glitz-pin-value") ?? "";
+    const pin = settings?.admin_pin ?? "";
     if (!/^\d{4}$/.test(pin)) {
       toast("Babe, unlock again to reorder 🌸");
       return;
@@ -96,7 +96,7 @@ function GalleryAdminPage() {
   };
 
   const removeSet = async (id: string) => {
-    const pin = sessionStorage.getItem("blooming-glitz-pin-value") ?? "";
+    const pin = settings?.admin_pin ?? "";
     if (!/^\d{4}$/.test(pin)) {
       toast("Babe, unlock again to remove 🌸");
       return;
