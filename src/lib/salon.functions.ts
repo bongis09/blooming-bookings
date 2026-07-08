@@ -125,3 +125,81 @@ export const updateAdminSettings = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+const serviceUpsertSchema = z.object({
+  pin: z.string().regex(/^\d{4}$/),
+  id: z.string().uuid().optional().nullable(),
+  name: z.string().trim().min(1).max(120),
+  description: z.string().max(500).optional().nullable(),
+  category: z.string().trim().min(1).max(40),
+  tier: z.string().trim().max(40).optional().nullable(),
+  duration_minutes: z.number().int().min(5).max(600),
+  price_cents: z.number().int().min(0).max(10_000_000),
+  active: z.boolean(),
+});
+
+async function verifyPin(pin: string) {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data } = await supabaseAdmin
+    .from("settings")
+    .select("admin_pin")
+    .eq("id", 1)
+    .single();
+  if (!data || data.admin_pin !== pin) throw new Error("Invalid PIN");
+}
+
+export const upsertService = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) => serviceUpsertSchema.parse(d))
+  .handler(async ({ data }) => {
+    await verifyPin(data.pin);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const payload = {
+      name: data.name,
+      description: data.description || null,
+      category: data.category,
+      tier: data.tier || null,
+      duration_minutes: data.duration_minutes,
+      price_cents: data.price_cents,
+      active: data.active,
+    };
+    if (data.id) {
+      const { error } = await supabaseAdmin.from("services").update(payload).eq("id", data.id);
+      if (error) throw new Error(error.message);
+      return { id: data.id };
+    }
+    const { data: created, error } = await supabaseAdmin
+      .from("services")
+      .insert(payload)
+      .select("id")
+      .single();
+    if (error || !created) throw new Error(error?.message ?? "Could not add service");
+    return { id: created.id };
+  });
+
+const serviceDeleteSchema = z.object({
+  pin: z.string().regex(/^\d{4}$/),
+  id: z.string().uuid(),
+});
+
+export const deleteService = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) => serviceDeleteSchema.parse(d))
+  .handler(async ({ data }) => {
+    await verifyPin(data.pin);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const nowIso = new Date().toISOString();
+    const { count, error: countErr } = await supabaseAdmin
+      .from("bookings")
+      .select("id", { count: "exact", head: true })
+      .eq("service_id", data.id)
+      .gte("start_at", nowIso)
+      .in("status", ["confirmed", "completed"]);
+    if (countErr) throw new Error(countErr.message);
+    if ((count ?? 0) > 0) {
+      throw new Error("Babe, this service has future bookings, you can turn it off but not remove it yet 🌸");
+    }
+    const { error } = await supabaseAdmin.from("services").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+
