@@ -56,17 +56,7 @@ function nailsSubCategory(name: string): "Acrylic" | "Polygel" | "Gel X" | "Othe
 }
 
 function ServicesAdminPage() {
-  const navigate = useNavigate();
-  const [unlocked, setUnlocked] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (sessionStorage.getItem(PIN_KEY) === "1") {
-      setUnlocked(true);
-    } else {
-      navigate({ to: "/admin" });
-    }
-  }, [navigate]);
+  const [unlocked, setUnlocked] = useAdminUnlocked();
 
   const { data: services = [], isLoading } = useQuery({
     queryKey: ["admin-services"],
@@ -82,7 +72,7 @@ function ServicesAdminPage() {
   });
 
   if (!unlocked) {
-    return <div className="p-10 text-center text-text-soft">One sec babe 🌸</div>;
+    return <AdminPinGate onUnlock={() => setUnlocked(true)} />;
   }
 
   const nails = services.filter((s) => s.category === "nails");
