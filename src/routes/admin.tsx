@@ -11,8 +11,6 @@ export const Route = createFileRoute("/admin")({
   }),
 });
 
-const PIN_KEY = "blooming-glitz-pin-ok";
-
 function AdminPage() {
   const [unlocked, setUnlocked] = useAdminUnlocked();
 
