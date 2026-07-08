@@ -39,6 +39,18 @@ function useSignedUrls(paths: string[]) {
 
 function GalleryAdminPage() {
   const qc = useQueryClient();
+  const { data: settings } = useQuery({
+    queryKey: ["settings"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("settings")
+        .select("admin_pin")
+        .eq("id", 1)
+        .single();
+      if (error) throw error;
+      return data;
+    },
+  });
   const { data: sets = [], isLoading } = useQuery({
     queryKey: ["admin-gallery"],
     queryFn: async () => {

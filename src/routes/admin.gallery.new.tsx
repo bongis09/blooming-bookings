@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { toast } from "sonner";
 import { BrandLogo } from "@/components/BrandLogo";
@@ -40,6 +41,18 @@ function fileToBase64(file: File): Promise<string> {
 function NewGalleryPage() {
   const nav = useNavigate();
   const qc = useQueryClient();
+  const { data: settings } = useQuery({
+    queryKey: ["settings"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("settings")
+        .select("admin_pin")
+        .eq("id", 1)
+        .single();
+      if (error) throw error;
+      return data;
+    },
+  });
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState(CATEGORIES[0]);
   const [file, setFile] = useState<File | null>(null);
